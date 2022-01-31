@@ -35,7 +35,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem esci;
 	private JMenuItem informazioni;
 	private String pathOpzioni="./JWarezReader.ini";
-	private String versione="0.3.1";
+	private String versione="0.4";
 	private JTextArea testo;
 	private JTextField pattern;
 	protected JWarezReader reader;

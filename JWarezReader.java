@@ -32,56 +32,15 @@ public class JWarezReader {
 	 return Pattern;
  }
  
-  public void readODS(JTextArea testo, Vector<Integer> colonne, Vector<Integer> righe)
-  {
-    Sheet sheet;
-    boolean found=false;
-    int ColCount=0;
-    int RowCount=0;
-    int RowIndex = 0;
-    int ColIndex = 0;
-    MutableCell cell = null;
-    try {
+  public void readODS(JTextArea testo, Vector<Integer> colonne, Vector<Integer> righe) {
          //Getting the 0th sheet for manipulation| pass sheet name as string
     	int i;
-    	File f;
     	for (i=0; i<FileList.size(); i++) {
     		if (!FileBoxed.get(i).isSelected())
     			continue;
-    		f=FileList.get(i);
-         sheet = SpreadSheet.createFromFile(f).getSheet(0);
-
-         //Get row count and column count
-         ColCount = sheet.getColumnCount();
-         RowCount = sheet.getRowCount();
-         testo.setText(testo.getText()+"Ricerca nel file: "+f.getName() + ". Il file contiene "+ RowCount + " righe e "+ ColCount + " colonne.\n");
-         found=false;
-         //Iterating through each row of the selected sheet
-         for(RowIndex=0; RowIndex < righe.size(); RowIndex++)
-         {
-        	 if (righe.get(RowIndex)>RowCount-1)
-        		 continue;
-           //Iterating through each column
-           ColIndex = 0;
-           for( ;ColIndex < colonne.size(); ColIndex++)
-           {
-        	   if (colonne.get(ColIndex)>ColCount-1)
-        		   continue;
-             cell = sheet.getCellAt(colonne.get(ColIndex), righe.get(RowIndex));
-             if (cell.getTextValue().toLowerCase().contains(Pattern)) {
-            	 testo.setText(testo.getText()+"Riga: "+RowIndex+" "+ "Colonna: "+ ColIndex+ " Valore: "+ cell.getTextValue()+ "\n");
-            	 found=true;
-             }
-            }
-          }
-         if (!found)
-        	 testo.setText(testo.getText()+"Il dato non è stato trovato.\n");
+    		WarezThread t=new WarezThread(FileList.get(i), testo, colonne, righe, Pattern);
+    		t.run();
     	}
-    } catch (IOException e) {
-            e.printStackTrace();
-          }
-
-
   }
 
   public static void Intestazione(String vers) {
