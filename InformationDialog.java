@@ -54,7 +54,7 @@ public class InformationDialog extends JDialog {
 		c.gridy=3;
 		p.add(new JLabel("Anno di creazione:"), c);
 		c.gridx=1;
-		p.add(new JLabel("2018"), c);
+		p.add(new JLabel("2022"), c);
 		c.gridx=0;
 		c.gridy=4;
 		p.add(new JLabel("Idea di: "), c);

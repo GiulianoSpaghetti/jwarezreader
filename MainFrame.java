@@ -38,12 +38,11 @@ public class MainFrame extends JFrame implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 8194381088320438542L;
-	private JMenuItem opzioni;
 	private JMenuItem esci;
 	private JMenuItem informazioni;
 	private static String pathOpzioni="JWarezReader.json";
 	private static String path;
-	private String versione="0.4.1";
+	private String versione="0.4.2";
 	private JTextArea testo;
 	private JTextField pattern;
 	protected JWarezReader reader;
@@ -54,11 +53,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JMenuBar menuBar=new JMenuBar();
 		JMenu menuFile=new JMenu("File");
-		opzioni=new JMenuItem("Opzioni");
 		esci=new JMenuItem("Esci");
 		esci.addActionListener(this);
-		menuFile.add(opzioni);
-		opzioni.addActionListener(this);
 		menuFile.add(esci);
 		JMenu menuInformazioni=new JMenu("?");
 		informazioni=new JMenuItem("Informazioni");
@@ -81,14 +77,14 @@ public class MainFrame extends JFrame implements ActionListener {
 			wo.path="/home/numerone/Documenti";
 			wo.righe="0,1,2,3,4,5,6,7,8,9,10,11,12";
 			wo.colonne="1";
-			JOptionDialog d=new JOptionDialog(this, wo);
-			try {
-				salvaStato(gson.toJson(wo));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		} 
+		JOptionDialog d=new JOptionDialog(this, wo);
+		try {
+			salvaStato(gson.toJson(wo));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		testo=new JTextArea(80,60);
 		reader=new JWarezReader(wo, testo);
 		JPanel p=new JPanel(new GridBagLayout());
@@ -132,15 +128,6 @@ public class MainFrame extends JFrame implements ActionListener {
 			if (e.getSource()==esci) {
 				dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 				return;
-			} else if (e.getSource()==opzioni) {
-        		JOptionDialog d=new JOptionDialog(this, wo);
-        		try {
-					salvaStato(wo.toString());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-        		//d.CloseFrame();
 			}
 			else if (e.getSource()==informazioni) {
         		InformationDialog d=new InformationDialog(this, versione);

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -56,7 +57,7 @@ public class JWarezReader {
 			
 	    File[] files = directory.listFiles(odsFileFilter);
 	    if (files==null || files.length==0) {
-			  System.out.println("Controllare la Path. Il programma termina");
+			  JOptionPane.showMessageDialog(null, "La path selezionata non contiene file ods. Il programma termina", "Errore", JOptionPane.ERROR_MESSAGE);
 			  System.exit(0);
 	    }
 	    FileList = new ArrayList<File>(files.length);
