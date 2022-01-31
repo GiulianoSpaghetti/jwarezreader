@@ -54,19 +54,23 @@ public class JWarezReader {
          //Get row count and column count
          ColCount = sheet.getColumnCount();
          RowCount = sheet.getRowCount();
-         testo.setText("Ricerca nel file: "+f.getName() + ". Il file contiene "+ RowCount + " righe e "+ ColCount + " colonne.\n");
+         testo.setText(testo.getText()+"Ricerca nel file: "+f.getName() + ". Il file contiene "+ RowCount + " righe e "+ ColCount + " colonne.\n");
          found=false;
          //Iterating through each row of the selected sheet
          for(RowIndex=0; RowIndex < righe.size(); RowIndex++)
          {
+        	 if (righe.get(RowIndex)>RowCount-1)
+        		 continue;
            //Iterating through each column
            ColIndex = 0;
            for( ;ColIndex < colonne.size(); ColIndex++)
            {
+        	   if (colonne.get(ColIndex)>ColCount-1)
+        		   continue;
              cell = sheet.getCellAt(colonne.get(ColIndex), righe.get(RowIndex));
              if (cell.getTextValue().toLowerCase().contains(Pattern)) {
             	 testo.setText(testo.getText()+"Riga: "+RowIndex+" "+ "Colonna: "+ ColIndex+ " Valore: "+ cell.getTextValue()+ "\n");
-             found=true;
+            	 found=true;
              }
             }
           }

@@ -35,7 +35,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem esci;
 	private JMenuItem informazioni;
 	private String pathOpzioni="./JWarezReader.ini";
-	private String versione="0.3";
+	private String versione="0.3.1";
 	private JTextArea testo;
 	private JTextField pattern;
 	protected JWarezReader reader;
@@ -99,12 +99,17 @@ public class MainFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				if (pattern.getText().isEmpty() || pattern.getText()=="") {
+					pattern.setText("Il pattern non può essere vuoto");
+					return;
+				}
 				reader.SetPattern(pattern.getText());
 				reader.readODS(testo, righe, colonne);
 			}
 		});
 		p.add(Cerca,c);
 		add(p);
+		pack();
 	}	
 	
 	public void actionPerformed(ActionEvent e) {
