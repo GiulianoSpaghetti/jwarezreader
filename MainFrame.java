@@ -33,7 +33,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame {
 	/**
 	 * 
 	 */
@@ -54,11 +54,23 @@ public class MainFrame extends JFrame implements ActionListener {
 		JMenuBar menuBar=new JMenuBar();
 		JMenu menuFile=new JMenu("File");
 		esci=new JMenuItem("Esci");
-		esci.addActionListener(this);
+		esci.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				dispatchEvent(new WindowEvent(MainFrame.this, WindowEvent.WINDOW_CLOSING));
+			}});
 		menuFile.add(esci);
 		JMenu menuInformazioni=new JMenu("?");
 		informazioni=new JMenuItem("Informazioni");
-		informazioni.addActionListener(this);
+		informazioni.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				InformationDialog d=new InformationDialog(MainFrame.this, versione);
+			}	});
 		menuInformazioni.add(informazioni);
 		menuBar.add(menuFile);
 		menuBar.add(menuInformazioni);
@@ -123,16 +135,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		add(p);
 		pack();
 	}	
-	
-	public void actionPerformed(ActionEvent e) {
-			if (e.getSource()==esci) {
-				dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-				return;
-			}
-			else if (e.getSource()==informazioni) {
-        		InformationDialog d=new InformationDialog(this, versione);
-			}
-	}
+
 	
 	public static void main(String[] args) {
 		try {
