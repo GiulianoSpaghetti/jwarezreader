@@ -16,29 +16,27 @@ import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
 public class JWarezReader {
 
- private String path;
  private ArrayList<File> FileList;
- private String Pattern;
  private ArrayList<JCheckBox> FileBoxed;
- 
- public JWarezReader(String p) {
-	 path=p;
+ private String pattern;
+ private WarezOpzioni w;
+ private JTextArea testo;
+ public JWarezReader(WarezOpzioni wo, JTextArea t) {
+	 w=wo;
+	 testo=t;
  }
  
- public void SetPattern(String p) {
-	 Pattern=p.toLowerCase();
- }
- public String GetPattern() {
-	 return Pattern;
- }
+
  
-  public void readODS(JTextArea testo, Vector<Integer> colonne, Vector<Integer> righe) {
+  public void readODS() {
          //Getting the 0th sheet for manipulation| pass sheet name as string
     	int i;
+    	Vector<Integer>righe=WriterParser.explode(w.righe);
+    	Vector<Integer>colonne=WriterParser.explode(w.colonne);
     	for (i=0; i<FileList.size(); i++) {
     		if (!FileBoxed.get(i).isSelected())
     			continue;
-    		WarezThread t=new WarezThread(FileList.get(i), testo, colonne, righe, Pattern);
+    		WarezThread t=new WarezThread(FileList.get(i), testo, colonne, righe, pattern);
     		t.run();
     	}
   }
@@ -48,7 +46,7 @@ public class JWarezReader {
   }
   
   public void EnumerateFiles() {
-	    File directory = new File(path);
+	    File directory = new File(w.path);
 		
 	    FileFilter odsFileFilter = new FileFilter() {
 	        public boolean accept(File directory) {
@@ -84,7 +82,15 @@ public class JWarezReader {
 	  return FileBoxed;
   }
   
-/*  public static void main(String[] args) {
+
+  public void setPattern(String p) {
+	  pattern=p.toLowerCase();
+  }
+  
+  public String getPattern() {
+	  return pattern;
+  }
+  /*  public static void main(String[] args) {
 	  	Intestazione("0.1");
 	  	System.out.print("Inserire la path dei files: ");
 	  	Scanner scan=new Scanner(System.in);

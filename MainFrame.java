@@ -5,14 +5,18 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -26,6 +30,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+
 public class MainFrame extends JFrame implements ActionListener {
 	/**
 	 * 
@@ -34,12 +41,14 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem opzioni;
 	private JMenuItem esci;
 	private JMenuItem informazioni;
-	private String pathOpzioni="./JWarezReader.ini";
-	private String versione="0.4";
+	private static String pathOpzioni="JWarezReader.json";
+	private static String path;
+	private String versione="0.4.1";
 	private JTextArea testo;
 	private JTextField pattern;
 	protected JWarezReader reader;
-	protected Vector<Integer> righe, colonne;
+	protected static WarezOpzioni wo;
+	private static Gson gson = new Gson();
 	public MainFrame() {
 		super("JWarezReader");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,11 +69,28 @@ public class MainFrame extends JFrame implements ActionListener {
 		setJMenuBar(menuBar);
 		setSize(400, 400);
 		setVisible(true);
-		File f=new File (pathOpzioni);
-		if (!f.exists()) {
-			JOptionDialog d=new JOptionDialog(this, new File(pathOpzioni));
-			d.CloseFrame();
-		}
+		path="JWarezReader";
+		if (System.getProperty("os.name").contains("Windows"))
+			path=System.getenv("APPDATA")+File.separator+path+File.separator+pathOpzioni;		
+		else
+			path=System.getProperty("user.home")+File.separator+".config"+File.separator+path+File.separator+pathOpzioni;
+		try {
+			wo=leggiStato();
+		} catch (IOException e) {
+			wo=new WarezOpzioni();
+			wo.path="/home/numerone/Documenti";
+			wo.righe="0,1,2,3,4,5,6,7,8,9,10,11,12";
+			wo.colonne="1";
+			JOptionDialog d=new JOptionDialog(this, wo);
+			try {
+				salvaStato(gson.toJson(wo));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} 
+		testo=new JTextArea(80,60);
+		reader=new JWarezReader(wo, testo);
 		JPanel p=new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill=GridBagConstraints.HORIZONTAL;
@@ -73,25 +99,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		Scanner scan;
 		p.add(new JLabel("Testo da cercare: "), c);
 		c.gridx=1;
-		p.add(pattern=new JTextField("Crash"), c);
+		p.add(pattern=new JTextField(""), c);
 		c.gridy=1;
 		c.gridx=0;
-		try {
-			scan = new Scanner(f);
-			reader=new JWarezReader(scan.nextLine());
-			righe=WriterParser.explode(scan.nextLine());
-			colonne=WriterParser.explode(scan.nextLine());
-			reader.EnumerateFiles();
-			for (JCheckBox i: reader.getFileList()) {
-				p.add(i, c);
-				c.gridy++;
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		reader.EnumerateFiles();
+		for (JCheckBox i: reader.getFileList()) {
+			p.add(i, c);
+			c.gridy++;
 		}
-		
-		p.add(testo=new JTextArea(80,60), c);
+		p.add(testo, c);
 		c.gridy++;
 		JButton Cerca=new JButton("Cerca");
 		Cerca.addActionListener(new ActionListener() {
@@ -99,12 +115,12 @@ public class MainFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if (pattern.getText().isEmpty() || pattern.getText()=="") {
-					pattern.setText("Il pattern non può essere vuoto");
+				if (pattern.getText().isEmpty() || pattern.getText()=="" || pattern.getText()==null) {
+					JOptionPane.showMessageDialog(null, "Il pattern non può essere vuoto", "Errore", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				reader.SetPattern(pattern.getText());
-				reader.readODS(testo, righe, colonne);
+				reader.setPattern(pattern.getText());
+				reader.readODS();
 			}
 		});
 		p.add(Cerca,c);
@@ -113,11 +129,18 @@ public class MainFrame extends JFrame implements ActionListener {
 	}	
 	
 	public void actionPerformed(ActionEvent e) {
-			if (e.getSource()==esci)
+			if (e.getSource()==esci) {
 				dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-			else if (e.getSource()==opzioni) {
-        		JOptionDialog d=new JOptionDialog(this, new File(pathOpzioni));
-        		d.CloseFrame();
+				return;
+			} else if (e.getSource()==opzioni) {
+        		JOptionDialog d=new JOptionDialog(this, wo);
+        		try {
+					salvaStato(wo.toString());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		//d.CloseFrame();
 			}
 			else if (e.getSource()==informazioni) {
         		InformationDialog d=new InformationDialog(this, versione);
@@ -139,6 +162,31 @@ public class MainFrame extends JFrame implements ActionListener {
 	          }
 	      });
 	}
-
+	private static WarezOpzioni leggiStato() throws IOException {
+		File f = new File(path);
+		WarezOpzioni wo=null;
+		if (!f.exists())
+			throw new FileNotFoundException();
+		else {
+			JsonReader reader = new JsonReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+			wo=gson.fromJson(reader, WarezOpzioni.class);
+		}
+		return wo;
+	}
 	
+	private static void salvaStato(String stato) throws IOException {
+		File f = new File(path);
+		if (!f.exists()) {
+			File d = new File(f.getParent());
+			if (!f.exists()) {
+				d.mkdirs();
+			}
+			f.createNewFile();
+		}
+ 
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f.getAbsoluteFile(), false));
+		bw.write(stato.toString());
+		bw.close();
+ 
+	}
 }
