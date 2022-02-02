@@ -76,7 +76,7 @@ public class InformationDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				openBrowser("http://numerone.altervista.org");
+				openBrowser("https://github.com/numerunix");
 			}
 		});
 		p.add(sitoMio, c);

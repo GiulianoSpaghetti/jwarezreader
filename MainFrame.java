@@ -115,7 +115,9 @@ public class MainFrame extends JFrame {
 			p.add(i, c);
 			c.gridy++;
 		}
+		c.gridx=1;
 		p.add(testo, c);
+		c.gridx=0;
 		c.gridy++;
 		JButton Cerca=new JButton("Cerca");
 		Cerca.addActionListener(new ActionListener() {
