@@ -87,7 +87,7 @@ public class InformationDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				openBrowser("http://wrztoys.altervista.org");
+				openBrowser("http://warenapoli.com");
 				
 			}
 			
