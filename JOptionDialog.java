@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
-
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -33,25 +33,26 @@ public class JOptionDialog extends JDialog {
 	private JButton scegli;
 	protected File file;
 	protected WarezOpzioni w;
-	public JOptionDialog(JFrame parent, WarezOpzioni wo) {
+	protected ResourceBundle bundle;
+	public JOptionDialog(JFrame parent, WarezOpzioni wo, ResourceBundle bundle) {
 		super(parent);
 		setModal(true);
-		setTitle("Impostazioni");
+		setTitle(bundle.getString("Impostazioni"));
 		w=wo;
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		JPanel p=new JPanel(new GridBagLayout());
 		GridBagConstraints c=new GridBagConstraints();
-
+		this.bundle=bundle;
 
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridx=0;
 		c.gridy=0;
-		p.add(new JLabel("Path dei files: "), c);
+		p.add(new JLabel(bundle.getString("PathFile")+": "), c);
 		c.gridx=1;
 		p.add(path=new JTextField(50), c);
 		path.setText(w.path);
 		c.gridx=2;
-		scegli=new JButton("Scegli");
+		scegli=new JButton(bundle.getString("Scegli"));
 		scegli.addActionListener(new ActionListener() {
 
 			@Override
@@ -70,7 +71,7 @@ public class JOptionDialog extends JDialog {
 		p.add(scegli, c);
 		c.gridy=1;
 		c.gridx=0;
-		p.add(new JLabel("Numeri delle righe in cui cercare: "), c);
+		p.add(new JLabel(bundle.getString("NumeriRighe")+": "), c);
 		c.gridx=1;
 		c.gridwidth=2;
 		p.add(righe=new JTextField(50), c);
@@ -78,7 +79,7 @@ public class JOptionDialog extends JDialog {
 		c.gridx=0;
 		c.gridy=2;
 		c.gridwidth=1;
-		p.add(new JLabel("Numeri delle colonne in cui cercare: "), c);
+		p.add(new JLabel(bundle.getString("NumeriColonne")+": "), c);
 		c.gridx=1;
 		c.gridwidth=2;
 		p.add(colonne=new JTextField(50), c);
@@ -95,7 +96,7 @@ public class JOptionDialog extends JDialog {
 			}});
 		p.add(ok, c);
 		c.gridx=1;
-		annulla=new JButton("Annulla");
+		annulla=new JButton(bundle.getString("Annulla"));
 		annulla.addActionListener(new ActionListener() {
 
 			@Override
@@ -112,14 +113,14 @@ public class JOptionDialog extends JDialog {
 	protected void OnOK() {
 		BufferedWriter writer;
 		if (path.getText().isEmpty() || path.getText()=="" || path.getText()==null) {
-			JOptionPane.showMessageDialog(this, "La path non può essere nulla", "Errore", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, bundle.getString("pathNulla"), bundle.getString("Errore"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		w.path=path.getText();
 		if (!righe.getText().isEmpty()) {
 			w.righe=righe.getText();
 			if (w.righe=="") {
-				JOptionPane.showMessageDialog(this, "La stringa numeri delle righe in cui cercare non è corretta", "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, bundle.getString("righeNonCorrette"), bundle.getString("Errore"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
@@ -127,7 +128,7 @@ public class JOptionDialog extends JDialog {
 		if (!colonne.getText().isEmpty()) {
 			w.colonne=colonne.getText();
 			if (w.colonne=="") {
-				JOptionPane.showMessageDialog(this, "La stringa numeri delle colonne in cui cercare non è corretta", "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, bundle.getString("colonneNonCorrette"), bundle.getString("Errore"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}	

@@ -2,6 +2,7 @@ package org.altervista.numerone.JWarez;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.JTextArea;
@@ -23,7 +24,8 @@ public class WarezThread extends Thread {
     private JTextArea testo;
     private File f;
     private String Pattern;
-    public WarezThread(File file, JTextArea a, Vector<Integer> c, Vector<Integer> r, String pattern) { f=file; testo=a; colonne=c; righe=r; Pattern=pattern;}
+    private ResourceBundle bundle;
+    public WarezThread(File file, JTextArea a, Vector<Integer> c, Vector<Integer> r, String pattern, ResourceBundle b) { f=file; testo=a; colonne=c; righe=r; Pattern=pattern; bundle=b;}
     
 	public void run() {
 	
@@ -37,7 +39,7 @@ public class WarezThread extends Thread {
     //Get row count and column count
     ColCount = sheet.getColumnCount();
     RowCount = sheet.getRowCount();
-    testo.setText(testo.getText()+"Ricerca nel file: "+f.getName() + ". Il file contiene "+ RowCount + " righe e "+ ColCount + " colonne.\n");
+    testo.setText(testo.getText()+bundle.getString("Ricercanelfile")+": "+f.getName() + ". "+bundle.getString("Ilfilecontiene")+ RowCount + " " + bundle.getString("righee")+ ColCount + " " + bundle.getString("colonne")+".\n");
     found=false;
     if (righe.size()==0) {
     	for(int i=0; i<RowCount; i++)
@@ -60,13 +62,13 @@ public class WarezThread extends Thread {
    		   continue;
         cell = sheet.getCellAt(colonne.get(ColIndex), righe.get(RowIndex));
         if (cell.getTextValue().toLowerCase().contains(Pattern)) {
-       	 testo.setText(testo.getText()+"Riga: "+RowIndex+" "+ "Colonna: "+ ColIndex+ " Valore: "+ cell.getTextValue()+ "\n");
+       	 testo.setText(testo.getText()+bundle.getString("Riga")+": "+RowIndex+" "+ bundle.getString("Colonna")+": "+ ColIndex+ " "+bundle.getString("Valore")+": "+ cell.getTextValue()+ "\n");
        	 found=true;
         }
        }
      }
     if (!found)
-   	 testo.setText(testo.getText()+"Il dato non è stato trovato.\n");
+   	 testo.setText(testo.getText()+bundle.getString("datoNonTrovato")+".\n");
     }
 	
 }

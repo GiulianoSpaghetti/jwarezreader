@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -27,7 +28,7 @@ public class InformationDialog extends JDialog {
 	private JButton Ok;
 	private JButton sitoMio;
 	private JButton sitoWarez;
-	public InformationDialog(JFrame parent, String vers) {
+	public InformationDialog(JFrame parent, String vers, ResourceBundle bundle) {
 		super(parent);
 		setModal(true);
 		setTitle("Informazioni");
@@ -37,29 +38,29 @@ public class InformationDialog extends JDialog {
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridx=0;
 		c.gridy=0;
-		p.add(new JLabel("Autore: "), c);
+		p.add(new JLabel(bundle.getString("Autore")+": "), c);
 		c.gridx=1;
 		p.add(new JLabel("Giulio Sorrentino (aka numerone)"), c);
 		c.gridx=0;
 		c.gridy=1;
-		p.add(new JLabel("Copyright:"), c);
+		p.add(new JLabel(bundle.getString("Licenza")+": "), c);
 		c.gridx=1;
-		p.add(new JLabel("GPL versione 3 o, secondo la tua opinione, qualsiasi versione successiva"), c);
+		p.add(new JLabel(bundle.getString("GPL")), c);
 		c.gridx=0;
 		c.gridy=2;
-		p.add(new JLabel("Versione: "), c);
+		p.add(new JLabel(bundle.getString("Versione")+": "), c);
 		c.gridx=1;
 		p.add(new JLabel(""+vers), c);
 		c.gridx=0;
 		c.gridy=3;
-		p.add(new JLabel("Anno di creazione:"), c);
+		p.add(new JLabel(bundle.getString("Annodicreazione")+":"), c);
 		c.gridx=1;
 		p.add(new JLabel("2022"), c);
 		c.gridx=0;
 		c.gridy=4;
-		p.add(new JLabel("Idea di: "), c);
+		p.add(new JLabel(bundle.getString("Ideadi")+": "), c);
 		c.gridx=1;
-		p.add(new JLabel("Antonio Adamo di Warez, via Solimena 26-28, Napoli"), c);
+		p.add(new JLabel(bundle.getString("warezsas")), c);
 		Ok=new JButton("Ok");
 		Ok.addActionListener(new ActionListener() {
 
@@ -70,7 +71,7 @@ public class InformationDialog extends JDialog {
 		
 		c.gridx=0;
 		c.gridy=5;
-		sitoMio=new JButton("Sito di numerone");
+		sitoMio=new JButton(bundle.getString("sitomio"));
 		sitoMio.addActionListener(new ActionListener() {
 
 			@Override
@@ -81,13 +82,13 @@ public class InformationDialog extends JDialog {
 		});
 		p.add(sitoMio, c);
 		c.gridx=1;
-		sitoWarez = new JButton("Sito di Antonio");
+		sitoWarez = new JButton(bundle.getString("sitoantonio"));
 		sitoWarez.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				openBrowser("http://wareznapoli.com");
+				openBrowser("http://www.wareznapoli.com");
 				
 			}
 			

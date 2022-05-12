@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -42,7 +44,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem informazioni;
 	private static String pathOpzioni="JWarezReader.json";
 	private static String path;
-	private String versione="0.4.2";
+	private String versione="0.5";
 	private JTextArea testo;
 	private JTextField pattern;
 	protected JWarezReader reader;
@@ -51,9 +53,10 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		super("JWarezReader");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  		ResourceBundle bundle = ResourceBundle.getBundle("JWarezReader", Locale.getDefault());
 		JMenuBar menuBar=new JMenuBar();
-		JMenu menuFile=new JMenu("File");
-		esci=new JMenuItem("Esci");
+		JMenu menuFile=new JMenu(bundle.getString("File"));
+		esci=new JMenuItem(bundle.getString("Esci"));
 		esci.addActionListener(new ActionListener(){
 
 			@Override
@@ -62,14 +65,14 @@ public class MainFrame extends JFrame {
 				dispatchEvent(new WindowEvent(MainFrame.this, WindowEvent.WINDOW_CLOSING));
 			}});
 		menuFile.add(esci);
-		JMenu menuInformazioni=new JMenu("?");
-		informazioni=new JMenuItem("Informazioni");
+		JMenu menuInformazioni=new JMenu(bundle.getString("?"));
+		informazioni=new JMenuItem(bundle.getString("Informazioni"));
 		informazioni.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				InformationDialog d=new InformationDialog(MainFrame.this, versione);
+				InformationDialog d=new InformationDialog(MainFrame.this, versione, bundle);
 			}	});
 		menuInformazioni.add(informazioni);
 		menuBar.add(menuFile);
@@ -90,7 +93,7 @@ public class MainFrame extends JFrame {
 			wo.righe="0,1,2,3,4,5,6,7,8,9,10,11,12";
 			wo.colonne="1";
 		} 
-		JOptionDialog d=new JOptionDialog(this, wo);
+		JOptionDialog d=new JOptionDialog(this, wo, bundle);
 		try {
 			salvaStato(gson.toJson(wo));
 		} catch (IOException e1) {
@@ -98,7 +101,7 @@ public class MainFrame extends JFrame {
 			e1.printStackTrace();
 		}
 		testo=new JTextArea(80,60);
-		reader=new JWarezReader(wo, testo);
+		reader=new JWarezReader(wo, testo, bundle);
 		JPanel p=new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill=GridBagConstraints.HORIZONTAL;
@@ -126,7 +129,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				if (pattern.getText().isEmpty() || pattern.getText()=="" || pattern.getText()==null) {
-					JOptionPane.showMessageDialog(null, "Il pattern non può essere vuoto", "Errore", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, bundle.getString("patternVuoto"), "Errore", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				reader.setPattern(pattern.getText());

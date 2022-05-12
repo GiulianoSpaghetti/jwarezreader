@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
@@ -22,9 +23,12 @@ public class JWarezReader {
  private String pattern;
  private WarezOpzioni w;
  private JTextArea testo;
- public JWarezReader(WarezOpzioni wo, JTextArea t) {
+ private ResourceBundle bundle;
+ 
+ public JWarezReader(WarezOpzioni wo, JTextArea t, ResourceBundle bundle) {
 	 w=wo;
 	 testo=t;
+	 this.bundle=bundle;
  }
  
 
@@ -37,7 +41,7 @@ public class JWarezReader {
     	for (i=0; i<FileList.size(); i++) {
     		if (!FileBoxed.get(i).isSelected())
     			continue;
-    		WarezThread t=new WarezThread(FileList.get(i), testo, colonne, righe, pattern);
+    		WarezThread t=new WarezThread(FileList.get(i), testo, colonne, righe, pattern, bundle);
     		t.run();
     	}
   }
@@ -57,7 +61,7 @@ public class JWarezReader {
 			
 	    File[] files = directory.listFiles(odsFileFilter);
 	    if (files==null || files.length==0) {
-			  JOptionPane.showMessageDialog(null, "La path selezionata non contiene file ods. Il programma termina", "Errore", JOptionPane.ERROR_MESSAGE);
+			  JOptionPane.showMessageDialog(null, bundle.getString("pathODSVuota"), bundle.getString("Errore"), JOptionPane.ERROR_MESSAGE);
 			  System.exit(0);
 	    }
 	    FileList = new ArrayList<File>(files.length);
@@ -70,10 +74,10 @@ public class JWarezReader {
   
   public void PrintFiles() {
 	  if (FileList==null || FileList.size()==0) {
-		  System.out.println("Nessun file trovato. Il programma termina");
+		  System.out.println(bundle.getString("FileNonTrovato"));
 		  System.exit(0);
 	  }
-	  System.out.println("Verranno caricati i seguenti files");
+	  System.out.println("CaricaFile");
 	  for (File f: FileList) {
 		  System.out.println(""+f.getName());
 	  }
