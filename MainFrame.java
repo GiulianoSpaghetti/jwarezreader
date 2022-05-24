@@ -108,7 +108,7 @@ public class MainFrame extends JFrame {
 		c.gridx=0;
 		c.gridy=0;
 		Scanner scan;
-		p.add(new JLabel("Testo da cercare: "), c);
+		p.add(new JLabel(bundle.getString("TestoDaCercare")+": "), c);
 		c.gridx=1;
 		p.add(pattern=new JTextField(""), c);
 		c.gridy=1;
@@ -122,14 +122,14 @@ public class MainFrame extends JFrame {
 		p.add(testo, c);
 		c.gridx=0;
 		c.gridy++;
-		JButton Cerca=new JButton("Cerca");
+		JButton Cerca=new JButton(bundle.getString("Cerca"));
 		Cerca.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				if (pattern.getText().isEmpty() || pattern.getText()=="" || pattern.getText()==null) {
-					JOptionPane.showMessageDialog(null, bundle.getString("patternVuoto"), "Errore", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, bundle.getString("patternVuoto"), bundle.getString("Errore"), JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				reader.setPattern(pattern.getText());
