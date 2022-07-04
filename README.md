@@ -26,6 +26,10 @@ Ricordatevi che la GPL obbliga a mantenere i credits originali, quindi, per fare
 Se si apre due volte il programma si corrompe il file delle opzioni. Il programma va aperto una volta soltanto.
 Se si desidera cambiare path di ricerca è necessario riavviare manualmente il programma.
 
+# Donazioni
+
+[![paypal](https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H4ZHTFRCETWXG)
+
 # Bibliografia
 
 https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s1809settingthejavavirtualmachineloca01.html
