@@ -30,6 +30,8 @@ Se si desidera cambiare path di ricerca è necessario riavviare manualmente il p
 
 [![paypal](https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H4ZHTFRCETWXG)
 
+oppure puoi donare tramite carta hype.
+
 # Bibliografia
 
 https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s1809settingthejavavirtualmachineloca01.html
