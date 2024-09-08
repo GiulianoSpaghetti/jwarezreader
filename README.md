@@ -29,7 +29,3 @@ Se si desidera cambiare path di ricerca è necessario riavviare manualmente il p
 # Donazioni
 
 http://numerone.altervista.org/donazioni.php
-
-# Bibliografia
-
-https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s1809settingthejavavirtualmachineloca01.html
