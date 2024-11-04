@@ -1,4 +1,4 @@
-# jwarezreader
+## jwarezreader
 
 UN semplice script java che permette di cercare stringhe in file ods multipli, usando le librerie jopendocument.
 Andrebbero usate le regex, se qualcuno lo vuole pacthate è il benvenuto.
@@ -7,7 +7,10 @@ IL programma è stato richiesto da antonio adamo che ha un negozio che si chiama
 
 Per compilarlo è necessario gson e jopendocument
 
-# Localizzazione
+## ATTENZIONE 
+Java può essere utilizzato per polarizzare il sistema operativo e/o l'hardware 
+
+## Localizzazione
 
 Per localizzare il programma basta dotarsi di eclipse o di qualsiasi altro editor visuale, scaricare uno dei files JWarezRearder_xy.properties e tradurre tutto quello che è a destra del simbolo "=".
 A questo punto, bisogna rinominare il file usando la nominazione a due caratteri della traduzione (se prendete JWarezReader_it.properties e volete tradurlo in tedesco bisogna rinominarlo in JWarezReader_de.properties).
@@ -22,10 +25,10 @@ Ricordatevi che la GPL obbliga a mantenere i credits originali, quindi, per fare
 ![screen-2022-05-24-20-18-37](https://user-images.githubusercontent.com/49764967/170105050-66605044-0855-40e7-a623-3c34080a5022.png)
 
 
-# bug noti
+## bug noti
 Se si apre due volte il programma si corrompe il file delle opzioni. Il programma va aperto una volta soltanto.
 Se si desidera cambiare path di ricerca è necessario riavviare manualmente il programma.
 
-# Donazioni
+## Donazioni
 
 http://numerone.altervista.org/donazioni.php
